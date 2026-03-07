@@ -1,0 +1,30 @@
+version: '3.8'
+
+# Development override - adds volume mounts and development settings
+
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+    volumes:
+      - ../backend:/app/backend
+      - ../memory:/app/memory
+      - ../scheduler:/app/scheduler
+      - ../campaigns:/app/campaigns
+    environment:
+      - APP_ENV=development
+      - DEBUG=true
+      - LOG_LEVEL=DEBUG
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  orchestrator:
+    volumes:
+      - ../orchestrator/src:/app/src
+      - ../orchestrator/dist:/app/dist
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+
+  # Minimal local development - just run postgres and redis
+  # Comment out other services when not needed

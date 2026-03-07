@@ -1,0 +1,5 @@
+# Root-level Docker Compose for easy deployment
+# This file references the main configuration in the docker/ directory
+
+include:
+  - docker/docker-compose.yml

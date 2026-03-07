@@ -1,0 +1,164 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: voice-ai-postgres
+    environment:
+      POSTGRES_USER: voiceai
+      POSTGRES_PASSWORD: voiceai_pass
+      POSTGRES_DB: voiceai_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../database/postgres_schema:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U voiceai -d voiceai_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - voice-ai-network
+
+  # Redis Cache & Session Store
+  redis:
+    image: redis:7-alpine
+    container_name: voice-ai-redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - voice-ai-network
+
+  # Python Backend (FastAPI)
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+    container_name: voice-ai-backend
+    env_file:
+      - ../.env
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://voiceai:voiceai_pass@postgres:5432/voiceai_db
+      - REDIS_URL=redis://redis:6379/0
+      - APP_ENV=production
+      - LOG_LEVEL=INFO
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - voice-ai-network
+    restart: unless-stopped
+
+  # Node.js Orchestrator
+  orchestrator:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.orchestrator
+    container_name: voice-ai-orchestrator
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - BACKEND_URL=http://backend:8000
+      - BACKEND_WS_URL=ws://backend:8000
+      - REDIS_URL=redis://redis:6379/0
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - voice-ai-network
+    restart: unless-stopped
+
+  # Celery Worker for Campaign Processing
+  campaign-worker:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.worker
+    container_name: voice-ai-campaign-worker
+    env_file:
+      - ../.env
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://voiceai:voiceai_pass@postgres:5432/voiceai_db
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - voice-ai-network
+    restart: unless-stopped
+
+  # Celery Beat Scheduler
+  campaign-scheduler:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.worker
+    container_name: voice-ai-campaign-scheduler
+    command: celery -A campaigns.celery_tasks beat --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://voiceai:voiceai_pass@postgres:5432/voiceai_db
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - voice-ai-network
+    restart: unless-stopped
+
+  # React Frontend
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
+    container_name: voice-ai-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - voice-ai-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  voice-ai-network:
+    driver: bridge
