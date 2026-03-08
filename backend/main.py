@@ -95,8 +95,19 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         response.headers["X-Frame-Options"] = "DENY"
         # Note: X-XSS-Protection is deprecated and ignored by modern browsers
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-        response.headers["Content-Security-Policy"] = "default-src 'self'"
-        if not settings.DEBUG:
+        
+        # CSP configuration - permissive in DEBUG for Swagger/ReDoc, strict in production
+        if settings.DEBUG:
+            # Allow Swagger UI and ReDoc to function (CDN, inline scripts, data URIs)
+            response.headers["Content-Security-Policy"] = (
+                "default-src 'self'; "
+                "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+                "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+                "img-src 'self' data: https://cdn.jsdelivr.net; "
+                "font-src 'self' https://cdn.jsdelivr.net"
+            )
+        else:
+            response.headers["Content-Security-Policy"] = "default-src 'self'"
             response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
         return response
 
