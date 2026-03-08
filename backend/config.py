@@ -46,6 +46,9 @@ class Settings(BaseSettings):
     TTS_DEFAULT_VOICE_HI: str = "hi-IN-SwaraNeural"
     TTS_DEFAULT_VOICE_TA: str = "ta-IN-PallaviNeural"
 
+    # ── CORS ──
+    CORS_ORIGINS: str = "http://localhost:80,http://localhost:3000"  # Comma-separated origins
+
     # ── WebSocket ──
     WS_MAX_MESSAGE_SIZE: int = 1048576  # 1MB
     WS_PING_INTERVAL: int = 30
