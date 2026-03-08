@@ -26,14 +26,14 @@ class PatientCreate(BaseModel):
     email: Optional[str] = None
     date_of_birth: Optional[str] = None
     gender: Optional[str] = None
-    preferred_language: str = Field(default="en", pattern=r"^(en|hi|te)$")
+    preferred_language: str = Field(default="en", pattern=r"^(en|hi|ta)$")
 
 
 class PatientUpdate(BaseModel):
     first_name: Optional[str] = Field(None, min_length=1, max_length=128)
     last_name: Optional[str] = Field(None, min_length=1, max_length=128)
     email: Optional[str] = None
-    preferred_language: Optional[str] = Field(None, pattern=r"^(en|hi|te)$")
+    preferred_language: Optional[str] = Field(None, pattern=r"^(en|hi|ta)$")
     preferences: Optional[dict] = None
 
 

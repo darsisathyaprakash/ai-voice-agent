@@ -24,7 +24,7 @@ class CampaignCreate(BaseModel):
     campaign_type: CampaignType
     message_template: dict = Field(
         ...,
-        description="Templates per language: {'en': '...', 'hi': '...', 'te': '...'}",
+        description="Templates per language: {'en': '...', 'hi': '...', 'ta': '...'}",
     )
     target_criteria: Optional[dict] = None
     scheduled_at: Optional[datetime] = None
