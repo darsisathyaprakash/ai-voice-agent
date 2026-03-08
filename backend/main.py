@@ -2,11 +2,11 @@
 Voice AI Agent - FastAPI Application Entry Point
 Clinical Appointment Booking System with Real-Time Voice Processing
 """
-import asyncio
+# CodeRabbit review trigger - Production-ready Voice AI Agent
 import uuid
 import time
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request, HTTPException
+from fastapi import FastAPI, WebSocket, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
@@ -25,12 +25,24 @@ logger = get_logger("main")
 
 # ── Rate Limiting Middleware ──
 class RateLimitMiddleware(BaseHTTPMiddleware):
-    """Simple in-memory rate limiter."""
+    """Simple in-memory rate limiter with automatic cleanup."""
     
     def __init__(self, app, requests_per_minute: int = 100):
         super().__init__(app)
         self.requests_per_minute = requests_per_minute
         self.requests: dict[str, list[float]] = defaultdict(list)
+        self._last_cleanup = time.time()
+        self._cleanup_interval = 300  # Cleanup stale IPs every 5 minutes
+    
+    def _cleanup_stale_ips(self, current_time: float):
+        """Remove IPs with no recent requests to prevent memory growth."""
+        if current_time - self._last_cleanup < self._cleanup_interval:
+            return
+        minute_ago = current_time - 60
+        stale_ips = [ip for ip, times in self.requests.items() if not times or max(times) < minute_ago]
+        for ip in stale_ips:
+            del self.requests[ip]
+        self._last_cleanup = current_time
     
     async def dispatch(self, request: Request, call_next):
         # Skip rate limiting for health checks and WebSocket
@@ -41,7 +53,10 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         current_time = time.time()
         minute_ago = current_time - 60
         
-        # Clean old requests
+        # Periodically cleanup stale IPs to prevent memory growth
+        self._cleanup_stale_ips(current_time)
+        
+        # Clean old requests for this IP
         self.requests[client_ip] = [
             t for t in self.requests[client_ip] if t > minute_ago
         ]
@@ -78,9 +93,21 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         response = await call_next(request)
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
-        response.headers["X-XSS-Protection"] = "1; mode=block"
+        # Note: X-XSS-Protection is deprecated and ignored by modern browsers
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-        if not settings.DEBUG:
+        
+        # CSP configuration - permissive in DEBUG for Swagger/ReDoc, strict in production
+        if settings.DEBUG:
+            # Allow Swagger UI and ReDoc to function (CDN, inline scripts, data URIs)
+            response.headers["Content-Security-Policy"] = (
+                "default-src 'self'; "
+                "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+                "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+                "img-src 'self' data: https://cdn.jsdelivr.net; "
+                "font-src 'self' https://cdn.jsdelivr.net"
+            )
+        else:
+            response.headers["Content-Security-Policy"] = "default-src 'self'"
             response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
         return response
 
@@ -111,10 +138,17 @@ async def lifespan(app: FastAPI):
     
     yield
     
-    # Cleanup
+    # Cleanup with exception handling to ensure all resources are released
     logger.info("application_shutting_down")
-    await session_memory.disconnect()
-    await close_db()
+    try:
+        await session_memory.disconnect()
+    except Exception as e:
+        logger.error("session_memory_disconnect_failed", error=str(e))
+    finally:
+        try:
+            await close_db()
+        except Exception as e:
+            logger.error("database_close_failed", error=str(e))
     logger.info("application_stopped")
 
 
@@ -139,9 +173,13 @@ app.add_middleware(RequestIdMiddleware)
 app.add_middleware(SecurityHeadersMiddleware)
 
 # CORS configuration - restrict in production
-allowed_origins = ["*"] if settings.DEBUG else [
-    "https://yourdomain.com",  # Update with actual domains
-]
+if settings.DEBUG:
+    allowed_origins = ["*"]
+else:
+    allowed_origins = settings.cors_origins_list
+    if not allowed_origins:
+        logger.warning("cors_origins_empty", message="CORS_ORIGINS is empty in production mode")
+        allowed_origins = []  # Deny all cross-origin requests if not configured
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,

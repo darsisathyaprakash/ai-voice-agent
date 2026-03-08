@@ -3,8 +3,7 @@ Central configuration for Voice AI Agent backend services.
 Uses pydantic-settings for environment variable management.
 """
 from pydantic_settings import BaseSettings
-from typing import Optional
-import os
+from typing import List
 
 
 class Settings(BaseSettings):
@@ -20,7 +19,8 @@ class Settings(BaseSettings):
     WORKERS: int = 4
 
     # ── Database ──
-    DATABASE_URL: str = "postgresql+asyncpg://voiceai:voiceai_pass@localhost:5432/voiceai_db"
+    # NOTE: Default is for local development only. Always set DATABASE_URL in production.
+    DATABASE_URL: str = "postgresql+asyncpg://user:password@localhost:5432/dbname"
     DATABASE_POOL_SIZE: int = 20
     DATABASE_MAX_OVERFLOW: int = 10
 
@@ -45,6 +45,9 @@ class Settings(BaseSettings):
     TTS_DEFAULT_VOICE_EN: str = "en-US-AriaNeural"
     TTS_DEFAULT_VOICE_HI: str = "hi-IN-SwaraNeural"
     TTS_DEFAULT_VOICE_TA: str = "ta-IN-PallaviNeural"
+
+    # ── CORS ──
+    CORS_ORIGINS: str = "http://localhost:80,http://localhost:3000"  # Comma-separated origins
 
     # ── WebSocket ──
     WS_MAX_MESSAGE_SIZE: int = 1048576  # 1MB
@@ -75,6 +78,13 @@ class Settings(BaseSettings):
             "ta": self.TTS_DEFAULT_VOICE_TA,
         }
         return voices.get(language, self.TTS_DEFAULT_VOICE_EN)
+
+    @property
+    def cors_origins_list(self) -> List[str]:
+        """Parse CORS_ORIGINS into a list, handling empty/undefined values."""
+        if not self.CORS_ORIGINS or not self.CORS_ORIGINS.strip():
+            return []
+        return [origin.strip() for origin in self.CORS_ORIGINS.split(",") if origin.strip()]
 
 
 settings = Settings()
