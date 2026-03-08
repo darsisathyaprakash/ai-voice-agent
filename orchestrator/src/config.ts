@@ -31,5 +31,5 @@ export const config = {
   },
 
   // Supported languages
-  supportedLanguages: ['en', 'hi', 'te'],
+  supportedLanguages: ['en', 'hi', 'ta'],
 };

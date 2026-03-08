@@ -53,8 +53,8 @@ The Real-Time Multilingual Voice AI Agent for Clinical Appointment Booking has s
 | Check | Status | Details |
 |-------|--------|---------|
 | Tool Registry | ✅ PASS | All API endpoints operational |
-| Language Detection | ✅ PASS | EN, HI, TE detection working |
-| TTS Voices | ✅ PASS | 3 voices configured (en-US-AriaNeural, hi-IN-SwaraNeural, te-IN-ShrutiNeural) |
+| Language Detection | ✅ PASS | EN, HI, TA detection working |
+| TTS Voices | ✅ PASS | 3 voices configured (en-US-AriaNeural, hi-IN-SwaraNeural, ta-IN-PallaviNeural) |
 | Agent Flow | ✅ PASS | Orchestrator ↔ Backend communication verified |
 
 ### Observability & Security
@@ -102,7 +102,7 @@ The Real-Time Multilingual Voice AI Agent for Clinical Appointment Booking has s
 |----------|------|-----------|-----------|
 | English | en | ✅ | en-US-AriaNeural |
 | Hindi | hi | ✅ | hi-IN-SwaraNeural |
-| Telugu | te | ✅ | te-IN-ShrutiNeural |
+| Tamil | ta | ✅ | ta-IN-PallaviNeural |
 
 ---
 

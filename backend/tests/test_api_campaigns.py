@@ -25,7 +25,7 @@ class TestCampaignEndpoints:
             "message_template": {
                 "en": "Your appointment is tomorrow at {time}",
                 "hi": "आपकी अपॉइंटमेंट कल {time} पर है",
-                "te": "మీ అపాయింట్మెంట్ రేపు {time} కి ఉంది",
+                "ta": "நாளை {time} மணிக்கு உங்கள் சந்திப்பு உள்ளது",
             },
         }
         try:
@@ -65,13 +65,13 @@ class TestCampaignEndpoints:
 class TestCampaignTemplates:
     """Test campaign message templates."""
 
-    def test_template_languages_include_telugu(self):
-        """Test that campaign templates support Telugu."""
-        # This verifies the schema accepts Telugu templates
+    def test_template_languages_include_tamil(self):
+        """Test that campaign templates support Tamil."""
+        # This verifies the schema accepts Tamil templates
         valid_template = {
             "en": "English message",
             "hi": "Hindi message",
-            "te": "Telugu message: నేను మీకు గుర్తు చేస్తున్నాను",
+            "ta": "Tamil message: நான் உங்களுக்கு நினைவூட்டுகிறேன்",
         }
-        assert "te" in valid_template
-        assert len(valid_template["te"]) > 0
+        assert "ta" in valid_template
+        assert len(valid_template["ta"]) > 0

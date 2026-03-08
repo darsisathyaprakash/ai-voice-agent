@@ -1,6 +1,6 @@
 """
 Language Detection Service for multilingual voice conversations.
-Detects English, Hindi, and Telugu from text input.
+Detects English, Hindi, and Tamil from text input.
 """
 from typing import Optional
 from langdetect import detect, detect_langs, LangDetectException
@@ -15,20 +15,20 @@ class LanguageDetector:
     Language detection service supporting:
     - English (en)
     - Hindi (hi)
-    - Telugu (te)
+    - Tamil (ta)
     """
 
     # Supported languages mapping
     SUPPORTED_LANGUAGES = {
         "en": "en",  # English
         "hi": "hi",  # Hindi
-        "te": "te",  # Telugu
+        "ta": "ta",  # Tamil
         # Fallback mappings
         "mr": "hi",  # Marathi -> Hindi (similar script)
         "bn": "hi",  # Bengali -> Hindi (similar region)
-        "ta": "te",  # Tamil -> Telugu (similar region)
-        "kn": "te",  # Kannada -> Telugu (similar region)
-        "ml": "te",  # Malayalam -> Telugu (similar region)
+        "te": "ta",  # Telugu -> Tamil (similar region)
+        "kn": "ta",  # Kannada -> Tamil (similar region)
+        "ml": "ta",  # Malayalam -> Tamil (similar region)
     }
 
     DEFAULT_LANGUAGE = "en"
@@ -102,7 +102,7 @@ class LanguageDetector:
         result = {
             "detected": None,
             "confidence": 0.0,
-            "scores": {"en": 0.0, "hi": 0.0, "te": 0.0},
+            "scores": {"en": 0.0, "hi": 0.0, "ta": 0.0},
         }
         
         if not text or len(text.strip()) < 5:
@@ -139,7 +139,7 @@ class LanguageDetector:
         names = {
             "en": "English",
             "hi": "Hindi",
-            "te": "Telugu",
+            "ta": "Tamil",
         }
         return names.get(code, "Unknown")
 

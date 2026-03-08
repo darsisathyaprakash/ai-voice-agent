@@ -22,11 +22,11 @@ class TestConfigSettings:
         voice = settings.get_tts_voice("hi")
         assert voice == "hi-IN-SwaraNeural"
 
-    def test_tts_voice_telugu(self):
-        """Test Telugu TTS voice configuration."""
+    def test_tts_voice_tamil(self):
+        """Test Tamil TTS voice configuration."""
         from config import settings
-        voice = settings.get_tts_voice("te")
-        assert voice == "te-IN-ShrutiNeural"
+        voice = settings.get_tts_voice("ta")
+        assert voice == "ta-IN-PallaviNeural"
 
     def test_tts_voice_fallback(self):
         """Test TTS voice fallback for unknown language."""
@@ -58,17 +58,17 @@ class TestPrompts:
         assert HINDI_PROMPT is not None
         assert len(HINDI_PROMPT) > 200
 
-    def test_telugu_prompt_content(self):
-        """Test Telugu prompt exists."""
-        from agent.prompts import TELUGU_PROMPT
-        assert TELUGU_PROMPT is not None
-        assert len(TELUGU_PROMPT) > 200
+    def test_tamil_prompt_content(self):
+        """Test Tamil prompt exists."""
+        from agent.prompts import TAMIL_PROMPT
+        assert TAMIL_PROMPT is not None
+        assert len(TAMIL_PROMPT) > 200
 
     def test_get_system_prompt_all_languages(self):
         """Test system prompt generation for all languages."""
         from agent.prompts import get_system_prompt
 
-        for lang in ["en", "hi", "te"]:
+        for lang in ["en", "hi", "ta"]:
             prompt = get_system_prompt(lang, pending_confirmation=None)
             assert prompt is not None
             assert len(prompt) > 100
@@ -175,15 +175,15 @@ class TestLanguageDetectorConfig:
         detector = LanguageDetector()
         assert detector.SUPPORTED_LANGUAGES["en"] == "en"
         assert detector.SUPPORTED_LANGUAGES["hi"] == "hi"
-        assert detector.SUPPORTED_LANGUAGES["te"] == "te"
+        assert detector.SUPPORTED_LANGUAGES["ta"] == "ta"
 
     def test_fallback_mappings(self):
         """Test regional language fallbacks."""
         from services.language_detection.detector import LanguageDetector
 
         detector = LanguageDetector()
-        # Tamil should map to Telugu (regional proximity)
-        assert detector.SUPPORTED_LANGUAGES.get("ta") == "te"
+        # Telugu should map to Tamil (regional proximity)
+        assert detector.SUPPORTED_LANGUAGES.get("te") == "ta"
         # Marathi should map to Hindi (script similarity)
         assert detector.SUPPORTED_LANGUAGES.get("mr") == "hi"
 
@@ -202,7 +202,7 @@ class TestVoiceAgentResponses:
         """Test error responses exist for all languages."""
         from agent.voice_agent import VoiceAgent
 
-        for lang in ["en", "hi", "te"]:
+        for lang in ["en", "hi", "ta"]:
             agent = VoiceAgent(session_id="test", language=lang)
             response = agent._get_error_response()
             assert response is not None
@@ -212,21 +212,21 @@ class TestVoiceAgentResponses:
         """Test fallback responses exist for all languages."""
         from agent.voice_agent import VoiceAgent
 
-        for lang in ["en", "hi", "te"]:
+        for lang in ["en", "hi", "ta"]:
             agent = VoiceAgent(session_id="test", language=lang)
             response = agent._get_fallback_response()
             assert response is not None
             assert len(response) > 10
 
-    def test_telugu_error_response_has_telugu_text(self):
-        """Test Telugu error response contains Telugu script."""
+    def test_tamil_error_response_has_tamil_text(self):
+        """Test Tamil error response contains Tamil script."""
         from agent.voice_agent import VoiceAgent
 
-        agent = VoiceAgent(session_id="test", language="te")
+        agent = VoiceAgent(session_id="test", language="ta")
         response = agent._get_error_response()
-        # Should contain Telugu Unicode characters (U+0C00 to U+0C7F)
-        telugu_chars = [c for c in response if '\u0C00' <= c <= '\u0C7F']
-        assert len(telugu_chars) > 0, "Telugu response should contain Telugu script"
+        # Should contain Tamil Unicode characters (U+0B80 to U+0BFF)
+        tamil_chars = [c for c in response if '\u0B80' <= c <= '\u0BFF']
+        assert len(tamil_chars) > 0, "Tamil response should contain Tamil script"
 
 
 class TestObservability:

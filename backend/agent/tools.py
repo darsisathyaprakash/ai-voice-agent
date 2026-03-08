@@ -192,7 +192,7 @@ class ToolRegistry:
                     },
                     "language": {
                         "type": "string",
-                        "description": "Preferred doctor language (en, hi, te)",
+                        "description": "Preferred doctor language (en, hi, ta)",
                     },
                 },
                 "required": ["specialty"],

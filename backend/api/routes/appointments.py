@@ -25,7 +25,7 @@ class AppointmentCreate(BaseModel):
     appointment_date: date
     start_time: time
     reason: Optional[str] = None
-    language_used: Optional[str] = Field(default="en", pattern=r"^(en|hi|te)$")
+    language_used: Optional[str] = Field(default="en", pattern=r"^(en|hi|ta)$")
 
 
 class AppointmentReschedule(BaseModel):

@@ -70,8 +70,8 @@ class TestAppointmentEndpoints:
 
     @pytest.mark.asyncio
     async def test_appointment_language_validation(self, client):
-        """Test appointment language validation accepts en, hi, te."""
-        valid_languages = ["en", "hi", "te"]
+        """Test appointment language validation accepts en, hi, ta."""
+        valid_languages = ["en", "hi", "ta"]
         for lang in valid_languages:
             # This tests the schema validation
             tomorrow = date.today() + timedelta(days=1)

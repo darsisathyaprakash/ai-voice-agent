@@ -53,7 +53,7 @@ class TestPatientEndpoints:
     @pytest.mark.asyncio
     async def test_supported_languages(self, client, sample_patient_data):
         """Test that all supported languages are accepted."""
-        for idx, lang in enumerate(["en", "hi", "te"]):
+        for idx, lang in enumerate(["en", "hi", "ta"]):
             data = sample_patient_data.copy()
             data["phone"] = f"+1234567890{idx}"  # Valid phone pattern
             data["preferred_language"] = lang

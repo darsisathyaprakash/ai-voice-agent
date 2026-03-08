@@ -195,7 +195,7 @@ class OutboundCallScheduler:
             message_template={
                 "en": "Hello {name}, this is a reminder for your appointment with {doctor} tomorrow at {time}. Reply to confirm or reschedule.",
                 "hi": "नमस्ते {name}, यह आपको कल {time} बजे {doctor} के साथ आपकी अपॉइंटमेंट की याद दिलाने के लिए है। पुष्टि करने या फिर से शेड्यूल करने के लिए जवाब दें।",
-                "te": "హలో {name}, రేపు {time} కు {doctor} తో మీ అపాయింట్‌మెంట్ గురించి రిమైండర్. నిర్ధారించడానికి లేదా రీషెడ్యూల్ చేయడానికి సమాధానం ఇవ్వండి.",
+                "ta": "வணக்கம் {name}, நாளை {time} மணிக்கு {doctor} உடன் உங்கள் சந்திப்பு பற்றிய நினைவூட்டல். உறுதிப்படுத்த அல்லது மறுதிட்டமிட பதிலளிக்கவும்.",
             },
             status=CampaignStatus.ACTIVE,
         )

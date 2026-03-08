@@ -118,7 +118,7 @@ def sample_doctor_data():
         "department": "Cardiology",
         "consultation_duration_minutes": 30,
         "is_active": True,
-        "languages": ["en", "hi", "te"],
+        "languages": ["en", "hi", "ta"],
     }
 
 

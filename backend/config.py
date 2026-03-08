@@ -44,7 +44,7 @@ class Settings(BaseSettings):
     # ── Text-to-Speech ──
     TTS_DEFAULT_VOICE_EN: str = "en-US-AriaNeural"
     TTS_DEFAULT_VOICE_HI: str = "hi-IN-SwaraNeural"
-    TTS_DEFAULT_VOICE_TE: str = "te-IN-ShrutiNeural"
+    TTS_DEFAULT_VOICE_TA: str = "ta-IN-PallaviNeural"
 
     # ── WebSocket ──
     WS_MAX_MESSAGE_SIZE: int = 1048576  # 1MB
@@ -72,7 +72,7 @@ class Settings(BaseSettings):
         voices = {
             "en": self.TTS_DEFAULT_VOICE_EN,
             "hi": self.TTS_DEFAULT_VOICE_HI,
-            "te": self.TTS_DEFAULT_VOICE_TE,
+            "ta": self.TTS_DEFAULT_VOICE_TA,
         }
         return voices.get(language, self.TTS_DEFAULT_VOICE_EN)
 

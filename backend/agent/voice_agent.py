@@ -21,7 +21,7 @@ class VoiceAgent:
     LLM-based voice agent for clinical appointment booking.
     
     Features:
-    - Multi-language support (English, Hindi, Telugu)
+    - Multi-language support (English, Hindi, Tamil)
     - Tool calling for appointment operations
     - Conversation memory with context
     - Intent tracking and confirmation handling
@@ -195,7 +195,7 @@ class VoiceAgent:
         responses = {
             "en": "I'm sorry, I encountered an error. Could you please repeat that?",
             "hi": "मुझे खेद है, कुछ गड़बड़ हो गई। क्या आप कृपया दोहरा सकते हैं?",
-            "te": "క్షమించండి, ఒక లోపం ఏర్పడింది. దయచేసి మళ్ళీ చెప్పగలరా?",
+            "ta": "மன்னிக்கவும், ஒரு பிழை ஏற்பட்டது. தயவுசெய்து மீண்டும் சொல்ல முடியுமா?",
         }
         return responses.get(self.language, responses["en"])
 
@@ -204,6 +204,6 @@ class VoiceAgent:
         responses = {
             "en": "I'm here to help with your appointment. What would you like to do?",
             "hi": "मैं आपकी अपॉइंटमेंट में मदद के लिए हूं। आप क्या करना चाहेंगे?",
-            "te": "మీ అపాయింట్‌మెంట్‌కు సహాయం చేయడానికి నేను ఇక్కడ ఉన్నాను. మీరు ఏమి చేయాలనుకుంటున్నారు?",
+            "ta": "உங்கள் சந்திப்புக்கு உதவ நான் இங்கே இருக்கிறேன். நீங்கள் என்ன செய்ய விரும்புகிறீர்கள்?",
         }
         return responses.get(self.language, responses["en"])

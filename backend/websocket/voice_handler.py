@@ -340,7 +340,7 @@ class VoiceWebSocketHandler:
         goodbye_messages = {
             "en": "Thank you for calling. Have a great day!",
             "hi": "कॉल करने के लिए धन्यवाद। आपका दिन शुभ हो!",
-            "te": "కాల్ చేసినందుకు ధన్యవాదాలు. మీకు శుభ దినం అవ్వుగాక!",
+            "ta": "அழைத்ததற்கு நன்றி. உங்கள் நாள் நன்றாக இருக்கட்டும்!",
         }
         
         message = goodbye_messages.get(language, goodbye_messages["en"])

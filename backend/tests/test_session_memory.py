@@ -19,7 +19,7 @@ class TestSessionMemory:
 
         session_id = await memory.create_session(
             patient_id="test-patient",
-            language="te"
+            language="ta"
         )
 
         assert session_id is not None
@@ -33,7 +33,7 @@ class TestSessionMemory:
         memory = SessionMemory()
         memory.redis = mock_redis
 
-        for lang in ["en", "hi", "te"]:
+        for lang in ["en", "hi", "ta"]:
             session_id = await memory.create_session(language=lang)
             assert session_id is not None
 
@@ -73,7 +73,7 @@ class TestSessionMemory:
         await memory.add_message(
             session_id="test-session",
             role="user",
-            content="నాకు అపాయింట్మెంట్ కావాలి",  # Telugu: I need an appointment
+            content="எனக்கு சந்திப்பு வேண்டும்",  # Tamil: I need an appointment
         )
 
         mock_redis.rpush.assert_called()

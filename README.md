@@ -6,7 +6,7 @@
 [![TypeScript](https://img.shields.io/badge/typescript-5.0+-blue)](./frontend)
 [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
-A production-grade voice AI system that enables real-time voice conversations with patients in multiple languages (English, Hindi, Telugu) for managing clinical appointments.
+A production-grade voice AI system that enables real-time voice conversations with patients in multiple languages (English, Hindi, Tamil) for managing clinical appointments.
 
 ---
 
@@ -33,7 +33,7 @@ A production-grade voice AI system that enables real-time voice conversations wi
 ## 🎯 Key Features
 
 - **Real-time Voice Processing**: Sub-450ms latency from speech end to audio response
-- **Multilingual Support**: English, Hindi, and Telugu with automatic language detection
+- **Multilingual Support**: English, Hindi, and Tamil with automatic language detection
 - **Appointment Management**: Book, reschedule, cancel appointments with conflict detection
 - **Memory Systems**: Session memory (Redis) for conversations, persistent memory (PostgreSQL) for patient data
 - **Outbound Campaigns**: Automated appointment reminders and follow-ups
@@ -326,7 +326,7 @@ The LLM agent can call these tools:
 |----------|------|-----------|
 | English | en | en-US-AriaNeural |
 | Hindi | hi | hi-IN-SwaraNeural |
-| Telugu | te | te-IN-ShrutiNeural |
+| Tamil | ta | ta-IN-PallaviNeural |
 
 ## 💾 Memory Architecture
 

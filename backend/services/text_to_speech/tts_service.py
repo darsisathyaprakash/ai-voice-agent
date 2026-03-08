@@ -16,14 +16,14 @@ logger = get_logger("tts_service")
 class TTSService:
     """
     Text-to-Speech service using Microsoft Edge TTS.
-    Supports multilingual synthesis (English, Hindi, Telugu).
+    Supports multilingual synthesis (English, Hindi, Tamil).
     """
 
     def __init__(self):
         self.voices = {
             "en": settings.TTS_DEFAULT_VOICE_EN,
             "hi": settings.TTS_DEFAULT_VOICE_HI,
-            "te": settings.TTS_DEFAULT_VOICE_TE,
+            "ta": settings.TTS_DEFAULT_VOICE_TA,
         }
         self.default_voice = settings.TTS_DEFAULT_VOICE_EN
 

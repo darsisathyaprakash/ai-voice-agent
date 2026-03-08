@@ -409,7 +409,7 @@ function PatientFormModal({
             >
               <option value="en">English</option>
               <option value="hi">Hindi</option>
-              <option value="te">Telugu</option>
+              <option value="ta">Tamil</option>
             </select>
           </div>
           <div className="flex gap-3 pt-4">
@@ -572,7 +572,7 @@ function CampaignFormModal({
   const [campaignType, setCampaignType] = useState('appointment_reminder')
   const [messageEn, setMessageEn] = useState('')
   const [messageHi, setMessageHi] = useState('')
-  const [messageTe, setMessageTe] = useState('')
+  const [messageTa, setMessageTa] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -580,7 +580,7 @@ function CampaignFormModal({
     setSubmitting(true)
     const messageTemplate: Record<string, string> = { en: messageEn }
     if (messageHi) messageTemplate.hi = messageHi
-    if (messageTe) messageTemplate.te = messageTe
+    if (messageTa) messageTemplate.ta = messageTa
     
     await onSubmit({
       name,
@@ -644,13 +644,13 @@ function CampaignFormModal({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Message (Telugu)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Message (Tamil)</label>
             <textarea
-              value={messageTe}
-              onChange={(e) => setMessageTe(e.target.value)}
+              value={messageTa}
+              onChange={(e) => setMessageTa(e.target.value)}
               rows={2}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="హలో! ఇది మీ అపాయింట్‌మెంట్ గురించి రిమైండర్..."
+              placeholder="வணக்கம்! உங்கள் சந்திப்பு பற்றிய ஒரு நினைவூட்டல்..."
             />
           </div>
           <div className="flex gap-3 pt-4">
@@ -731,7 +731,7 @@ function Dashboard({
           </div>
           <div className="flex items-center gap-2 px-4 py-2 bg-purple-50 rounded-lg">
             <span className="text-2xl">🇮🇳</span>
-            <span>Telugu (te)</span>
+            <span>Tamil (ta)</span>
           </div>
         </div>
       </div>

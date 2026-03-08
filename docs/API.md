@@ -343,7 +343,7 @@ Create a new campaign.
   "message_template": {
     "en": "Hello {name}, reminder for your appointment tomorrow at {time}",
     "hi": "नमस्ते {name}, कल {time} पर आपकी अपॉइंटमेंट की याद",
-    "te": "హలో {name}, రేపు {time} కు మీ అపాయింట్‌మెంట్ రిమైండర్"
+    "ta": "வணக்கம் {name}, நாளை {time} மணிக்கு உங்கள் சந்திப்பு நினைவூட்டல்"
   },
   "scheduled_at": "2024-01-19T08:00:00Z"
 }

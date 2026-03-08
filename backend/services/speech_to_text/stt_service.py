@@ -20,7 +20,7 @@ _executor = ThreadPoolExecutor(max_workers=2)
 class STTService:
     """
     Speech-to-Text service using Faster Whisper.
-    Supports multilingual transcription (English, Hindi, Telugu).
+    Supports multilingual transcription (English, Hindi, Tamil).
     """
 
     def __init__(self):
@@ -124,7 +124,7 @@ class STTService:
         """Synchronous transcription (runs in thread pool)."""
         try:
             # Language mapping for Whisper
-            lang_map = {"en": "en", "hi": "hi", "te": "te"}
+            lang_map = {"en": "en", "hi": "hi", "ta": "ta"}
             whisper_lang = lang_map.get(language_hint) if language_hint else None
             
             # Transcribe

@@ -21,22 +21,22 @@ class TestVoiceAgent:
         assert "error" in response.lower() or "sorry" in response.lower()
 
     @pytest.mark.asyncio
-    async def test_get_error_response_telugu(self):
-        """Test error response in Telugu."""
+    async def test_get_error_response_tamil(self):
+        """Test error response in Tamil."""
         from agent.voice_agent import VoiceAgent
 
-        agent = VoiceAgent(session_id="test-session", language="te")
+        agent = VoiceAgent(session_id="test-session", language="ta")
         response = agent._get_error_response()
 
         assert response is not None
-        assert "క్షమించండి" in response or "లోపం" in response  # Telugu keywords
+        assert "மன்னிக்கவும்" in response or "பிழை" in response  # Tamil keywords
 
     @pytest.mark.asyncio
-    async def test_get_fallback_response_telugu(self):
-        """Test fallback response in Telugu."""
+    async def test_get_fallback_response_tamil(self):
+        """Test fallback response in Tamil."""
         from agent.voice_agent import VoiceAgent
 
-        agent = VoiceAgent(session_id="test-session", language="te")
+        agent = VoiceAgent(session_id="test-session", language="ta")
         response = agent._get_fallback_response()
 
         assert response is not None
@@ -47,7 +47,7 @@ class TestVoiceAgent:
         """Test voice agent initialization with different languages."""
         from agent.voice_agent import VoiceAgent
 
-        for lang in ["en", "hi", "te"]:
+        for lang in ["en", "hi", "ta"]:
             agent = VoiceAgent(session_id=f"test-{lang}", language=lang)
             assert agent.language == lang
             assert agent.session_id == f"test-{lang}"

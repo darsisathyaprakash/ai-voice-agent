@@ -14,7 +14,7 @@ class TestLanguageDetection:
 
         detector = LanguageDetector()
         result = await detector.detect("I need an appointment with a doctor tomorrow morning")
-        assert result in ["en", "hi", "te", None]
+        assert result in ["en", "hi", "ta", None]
 
     @pytest.mark.asyncio
     async def test_detect_hindi(self):
@@ -23,25 +23,25 @@ class TestLanguageDetection:
 
         detector = LanguageDetector()
         result = await detector.detect("मुझे डॉक्टर से मिलना है कल सुबह")
-        assert result in ["en", "hi", "te", None]
+        assert result in ["en", "hi", "ta", None]
 
     @pytest.mark.asyncio
-    async def test_detect_telugu(self):
-        """Test detecting Telugu text."""
+    async def test_detect_tamil(self):
+        """Test detecting Tamil text."""
         from services.language_detection.detector import LanguageDetector
 
         detector = LanguageDetector()
-        result = await detector.detect("నాకు డాక్టర్ అపాయింట్మెంట్ రేపు కావాలి")
-        assert result in ["en", "hi", "te", None]
+        result = await detector.detect("நாளை மருத்துவரை சந்திப்பு வேண்டும்")
+        assert result in ["en", "hi", "ta", None]
 
     def test_supported_languages_list(self):
-        """Test that supported languages include Telugu."""
+        """Test that supported languages include Tamil."""
         from services.language_detection.detector import LanguageDetector
 
         detector = LanguageDetector()
         assert "en" in detector.SUPPORTED_LANGUAGES
         assert "hi" in detector.SUPPORTED_LANGUAGES
-        assert "te" in detector.SUPPORTED_LANGUAGES
+        assert "ta" in detector.SUPPORTED_LANGUAGES
 
     @pytest.mark.asyncio
     async def test_fallback_language_empty_text(self):
@@ -65,18 +65,18 @@ class TestLanguageDetection:
 class TestMultilingualSupport:
     """Test multilingual text and prompts."""
 
-    def test_telugu_prompt_exists(self):
-        """Test that Telugu prompt is defined."""
-        from agent.prompts import TELUGU_PROMPT
+    def test_tamil_prompt_exists(self):
+        """Test that Tamil prompt is defined."""
+        from agent.prompts import TAMIL_PROMPT
 
-        assert TELUGU_PROMPT is not None
-        assert len(TELUGU_PROMPT) > 0
+        assert TAMIL_PROMPT is not None
+        assert len(TAMIL_PROMPT) > 0
 
-    def test_get_prompt_for_telugu(self):
-        """Test getting prompt for Telugu language."""
+    def test_get_prompt_for_tamil(self):
+        """Test getting prompt for Tamil language."""
         from agent.prompts import _get_base_prompt
 
-        prompt = _get_base_prompt("te")
+        prompt = _get_base_prompt("ta")
         assert prompt is not None
         assert len(prompt) > 0
 
@@ -84,18 +84,18 @@ class TestMultilingualSupport:
         """Test that all supported languages have prompts."""
         from agent.prompts import _get_base_prompt
 
-        for lang in ["en", "hi", "te"]:
+        for lang in ["en", "hi", "ta"]:
             prompt = _get_base_prompt(lang)
             assert prompt is not None
             assert len(prompt) > 100  # Should be substantial
 
     def test_tts_voice_mapping(self):
-        """Test TTS voice mapping for Telugu."""
+        """Test TTS voice mapping for Tamil."""
         from config import settings
 
-        voice = settings.get_tts_voice("te")
+        voice = settings.get_tts_voice("ta")
         assert voice is not None
-        assert "te-IN" in voice
+        assert "ta-IN" in voice
 
     def test_all_tts_voices(self):
         """Test TTS voice mapping for all languages."""
@@ -104,9 +104,9 @@ class TestMultilingualSupport:
         voices = {
             "en": settings.get_tts_voice("en"),
             "hi": settings.get_tts_voice("hi"),
-            "te": settings.get_tts_voice("te"),
+            "ta": settings.get_tts_voice("ta"),
         }
 
         assert "en-US" in voices["en"]
         assert "hi-IN" in voices["hi"]
-        assert "te-IN" in voices["te"]
+        assert "ta-IN" in voices["ta"]
