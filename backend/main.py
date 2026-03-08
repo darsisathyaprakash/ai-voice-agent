@@ -162,9 +162,13 @@ app.add_middleware(RequestIdMiddleware)
 app.add_middleware(SecurityHeadersMiddleware)
 
 # CORS configuration - restrict in production
-allowed_origins = ["*"] if settings.DEBUG else [
-    origin.strip() for origin in settings.CORS_ORIGINS.split(",") if origin.strip()
-]
+if settings.DEBUG:
+    allowed_origins = ["*"]
+else:
+    allowed_origins = settings.cors_origins_list
+    if not allowed_origins:
+        logger.warning("cors_origins_empty", message="CORS_ORIGINS is empty in production mode")
+        allowed_origins = []  # Deny all cross-origin requests if not configured
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
