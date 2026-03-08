@@ -2,6 +2,7 @@
 Voice AI Agent - FastAPI Application Entry Point
 Clinical Appointment Booking System with Real-Time Voice Processing
 """
+# CodeRabbit review trigger - Production-ready Voice AI Agent
 import asyncio
 import uuid
 import time
