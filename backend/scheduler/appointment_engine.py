@@ -62,10 +62,10 @@ class AppointmentEngine:
                 DoctorSchedule.start_time <= start_time,
                 DoctorSchedule.end_time > start_time,
             )
-        )
+        ).limit(1)
         
         schedule_result = await db.execute(schedule_query)
-        schedule = schedule_result.scalar_one_or_none()
+        schedule = schedule_result.scalars().first()
         
         if not schedule:
             logger.debug(
@@ -78,15 +78,14 @@ class AppointmentEngine:
         # Calculate end time based on slot duration
         end_time = self._add_minutes_to_time(start_time, schedule.slot_duration_minutes)
         
-        # Rule 3: Check for conflicting appointments
+        # Rule 3: Check for conflicting appointments (exclude cancelled/rescheduled)
         conflict_query = select(Appointment).where(
             and_(
                 Appointment.doctor_id == uuid.UUID(doctor_id),
                 Appointment.appointment_date == target_date,
-                Appointment.status.not_in([
-                    AppointmentStatus.CANCELLED,
-                    AppointmentStatus.RESCHEDULED,
-                ]),
+                # Exclude cancelled and rescheduled appointments using != 
+                Appointment.status != AppointmentStatus.CANCELLED,
+                Appointment.status != AppointmentStatus.RESCHEDULED,
                 or_(
                     # New appointment starts during existing
                     and_(
@@ -157,10 +156,8 @@ class AppointmentEngine:
             and_(
                 Appointment.doctor_id == uuid.UUID(doctor_id),
                 Appointment.appointment_date == target_date,
-                Appointment.status.not_in([
-                    AppointmentStatus.CANCELLED,
-                    AppointmentStatus.RESCHEDULED,
-                ]),
+                Appointment.status != AppointmentStatus.CANCELLED,
+                Appointment.status != AppointmentStatus.RESCHEDULED,
             )
         ).order_by(Appointment.start_time)
         

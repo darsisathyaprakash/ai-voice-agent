@@ -228,10 +228,8 @@ async def get_doctor_appointments(
             and_(
                 Appointment.doctor_id == doctor_id,
                 Appointment.appointment_date == target_date,
-                Appointment.status.not_in([
-                    AppointmentStatus.CANCELLED,
-                    AppointmentStatus.RESCHEDULED,
-                ]),
+                Appointment.status != AppointmentStatus.CANCELLED,
+                Appointment.status != AppointmentStatus.RESCHEDULED,
             )
         ).order_by(Appointment.start_time)
     )

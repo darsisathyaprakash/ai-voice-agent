@@ -140,7 +140,11 @@ class Appointment(Base):
     start_time: Mapped[time] = mapped_column(Time)
     end_time: Mapped[time] = mapped_column(Time)
     status: Mapped[str] = mapped_column(
-        SAEnum(AppointmentStatus, name="appointment_status"),
+        SAEnum(
+            AppointmentStatus,
+            name="appointment_status",
+            values_callable=lambda x: [e.value for e in x],
+        ),
         default=AppointmentStatus.SCHEDULED,
     )
     reason: Mapped[Optional[str]] = mapped_column(Text)
