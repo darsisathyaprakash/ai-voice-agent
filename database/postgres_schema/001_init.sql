@@ -18,7 +18,7 @@ CREATE TABLE patients (
     email           VARCHAR(255),
     date_of_birth   DATE,
     gender          VARCHAR(16),
-    preferred_language VARCHAR(8) DEFAULT 'en',  -- en, hi, te
+    preferred_language VARCHAR(8) DEFAULT 'en',  -- en, hi, ta
     medical_record_number VARCHAR(64) UNIQUE,
     preferences     JSONB DEFAULT '{}',
     created_at      TIMESTAMPTZ DEFAULT NOW(),

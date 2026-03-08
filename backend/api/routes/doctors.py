@@ -63,7 +63,7 @@ async def list_doctors(
     List all doctors with optional filtering.
     
     - specialization: Filter by specialty (cardiologist, dermatologist, etc.)
-    - language: Filter by spoken language (en, hi, te)
+    - language: Filter by spoken language (en, hi, ta)
     - active_only: Only return active doctors
     """
     query = select(Doctor)

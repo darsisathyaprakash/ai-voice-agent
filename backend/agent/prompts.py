@@ -10,7 +10,7 @@ def get_system_prompt(language: str = "en", pending_confirmation: Optional[dict]
     Get the system prompt for the voice agent.
     
     Args:
-        language: Target language (en, hi, te)
+        language: Target language (en, hi, ta)
         pending_confirmation: Any pending action requiring confirmation
         
     Returns:

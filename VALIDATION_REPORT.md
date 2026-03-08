@@ -299,7 +299,7 @@ pytest -v
 - ✅ WebSocket voice handling
 - ✅ Middleware stack
 - ✅ Error handling and logging
-- ✅ Multilingual support (en, hi, te)
+- ✅ Multilingual support (en, hi, ta)
 
 ### Production Readiness Checklist
 - [x] Environment validation at startup
