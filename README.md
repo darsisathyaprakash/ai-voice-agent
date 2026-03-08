@@ -62,14 +62,7 @@ cp .env.example .env
 docker compose up --build -d
 ```
 
-### Access Points
 
-| Service | URL |
-|---------|-----|
-| **Frontend Dashboard** | http://localhost |
-| **Backend API** | http://localhost:8000 |
-| **API Documentation** | http://localhost:8000/docs |
-| **Orchestrator** | http://localhost:3000 |
 
 ---
 
@@ -200,19 +193,12 @@ cd docker
 docker-compose up -d
 ```
 
-### 3. Verify Health
 
-```bash
-# Backend health
-curl http://localhost:8000/api/health
-
-# Orchestrator health
-curl http://localhost:3000/health
 ```
 
-### 4. Access Dashboard
 
-Open [http://localhost](http://localhost) to access the Voice AI Dashboard.
+
+
 
 Dashboard Features:
 - System health monitoring
