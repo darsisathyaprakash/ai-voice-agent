@@ -171,10 +171,10 @@ class Campaign(Base):
     )
     name: Mapped[str] = mapped_column(String(256))
     campaign_type: Mapped[str] = mapped_column(
-        SAEnum(CampaignType, name="campaign_type", native_enum=False, create_constraint=False, length=64)
+        SAEnum(CampaignType, name="campaign_type", native_enum=False, create_constraint=False, length=64, values_callable=lambda x: [e.value for e in x])
     )
     status: Mapped[str] = mapped_column(
-        SAEnum(CampaignStatus, name="campaign_status", native_enum=False, create_constraint=False, length=32),
+        SAEnum(CampaignStatus, name="campaign_status", native_enum=False, create_constraint=False, length=32, values_callable=lambda x: [e.value for e in x]),
         default=CampaignStatus.DRAFT,
     )
     message_template: Mapped[dict] = mapped_column(JSON)
@@ -205,7 +205,7 @@ class CampaignTask(Base):
         UUID(as_uuid=True), ForeignKey("appointments.id")
     )
     status: Mapped[str] = mapped_column(
-        SAEnum(TaskStatus, name="task_status", native_enum=False, create_constraint=False, length=32),
+        SAEnum(TaskStatus, name="task_status", native_enum=False, create_constraint=False, length=32, values_callable=lambda x: [e.value for e in x]),
         default=TaskStatus.PENDING,
     )
     attempts: Mapped[int] = mapped_column(Integer, default=0)

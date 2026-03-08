@@ -617,9 +617,9 @@ function CampaignFormModal({
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="appointment_reminder">Appointment Reminder</option>
-              <option value="follow_up">Follow Up</option>
-              <option value="health_checkup">Health Checkup</option>
-              <option value="vaccination">Vaccination</option>
+              <option value="follow_up_checkup">Follow-up Checkup</option>
+              <option value="vaccination_reminder">Vaccination Reminder</option>
+              <option value="general_notification">General Notification</option>
             </select>
           </div>
           <div>
